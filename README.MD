@@ -8,6 +8,7 @@ location.
 
 - React Native
 - Expo
+- React Native Gifted Chat library
 - Google Firestore DB
 - Google Firebase Authentication
 

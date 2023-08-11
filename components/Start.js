@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Button, TextInput, ImageBackground, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View, Text, Button, TextInput, ImageBackground, TouchableOpacity, Image} from 'react-native';
 import { useState } from 'react';
 
 const Start = ({ navigation }) => {
@@ -8,44 +8,44 @@ const Start = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <ImageBackground source={require('../assets/BackgroundImage.png')} style={styles.image}>
-                <Text style={styles.title}>Hello World App</Text>
-                <View style={styles.card}>
-                    <Image
-                        source={require('../assets/icon.svg')}
-                        style={styles.icon}
-                    />
-                    <TextInput
-                        style={styles.textInput}
-                        value={name}
-                        onChangeText={setName}
-                        placeholder='Your Name'
-                    />
-                    <Text style={styles.chooseBackground} >Choose Background Color:</Text>
-                    <View style={{ flexDirection: 'row', padding: 10 }}>
-                        <TouchableOpacity style={[styles.backgrounds, { backgroundColor: '#090C08' }]}
-                            onPress={() => setChatBackgroundColor('#090C08')}
+                <ImageBackground source={require('../assets/BackgroundImage.png')} style={styles.image}>
+                    <Text style={styles.title}>Hello World App</Text>
+                    <View style={styles.card}>
+                        <Image
+                            source={require('../assets/icon.svg')}
+                            style={styles.icon}
                         />
-                        <TouchableOpacity style={[styles.backgrounds, { backgroundColor: '#474056' }]}
-                            onPress={() => setChatBackgroundColor('#474056')}
+                        <TextInput
+                            style={styles.textInput}
+                            value={name}
+                            onChangeText={setName}
+                            placeholder='Your Name'
                         />
-                        <TouchableOpacity style={[styles.backgrounds, { backgroundColor: '#8A95A5' }]}
-                            onPress={() => setChatBackgroundColor('#8A95A5')}
-                        />
-                        <TouchableOpacity style={[styles.backgrounds, { backgroundColor: '#B9C6AE' }]}
-                            onPress={() => setChatBackgroundColor('#B9C6AE')}
-                        />
+                        <Text style={styles.chooseBackground} >Choose Background Color:</Text>
+                        <View style={{ flexDirection: 'row', padding: 10 }}>
+                            <TouchableOpacity style={[styles.backgrounds, { backgroundColor: '#fff' }]}
+                                onPress={() => setChatBackgroundColor('#fff')}
+                            />
+                            <TouchableOpacity style={[styles.backgrounds, { backgroundColor: '#474056' }]}
+                                onPress={() => setChatBackgroundColor('#474056')}
+                            />
+                            <TouchableOpacity style={[styles.backgrounds, { backgroundColor: '#8A95A5' }]}
+                                onPress={() => setChatBackgroundColor('#8A95A5')}
+                            />
+                            <TouchableOpacity style={[styles.backgrounds, { backgroundColor: '#B9C6AE' }]}
+                                onPress={() => setChatBackgroundColor('#B9C6AE')}
+                            />
+                        </View>
+                        <View style={styles.buttonComponent}>
+                            <TouchableOpacity
+                                onPress={() => navigation.navigate('Chat', { name: name, chatBackgroundColor: chatBackgroundColor })}
+                                style={styles.button}
+                            >
+                                <Text style={styles.buttonText}>Start Chatting</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                    <View style={styles.buttonComponent}>
-                        <TouchableOpacity
-                            onPress={() => navigation.navigate('Chat', { name: name, chatBackgroundColor: chatBackgroundColor })}
-                            style={styles.button}
-                        >
-                            <Text style={styles.buttonText}>Start Chatting</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </ImageBackground>
+                </ImageBackground>
         </View>
     )
 }
@@ -71,9 +71,11 @@ const styles = StyleSheet.create({
         marginTop: 100,
     },
     card: {
+        
         backgroundColor: '#fff',
         padding: 15,
-        height: '44%',
+        // this was set to a specific height otherwise the keyboard messes up the layout
+        height: 350,
         margin: 25,
     },
     textInput: {
@@ -82,7 +84,7 @@ const styles = StyleSheet.create({
         padding: 15,
         borderWidth: 1,
         marginBottom: 25,
-        alignItems:'center',
+        alignItems: 'center',
         justifyContent: 'center',
         marginLeft: 10,
     },
@@ -94,6 +96,8 @@ const styles = StyleSheet.create({
         marginLeft: 10,
     },
     backgrounds: {
+        borderWidth: 1,
+        borderColor: 'black',
         flexDirection: 'row',
         display: 'fixed',
         width: 50,
