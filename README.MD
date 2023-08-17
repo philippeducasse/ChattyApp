@@ -23,7 +23,7 @@ and location data.
 
 ## How to set up the application
 
-As this application requires react native and is devvelopped with Expo, the first step involves downgrading (if necessary) to a node version compatible with Expo:
+As this application requires react native and is developped with Expo, the first step involves downgrading (if necessary) to a node version compatible with Expo:
 
 nvm install 16.19.0
 nvm use 16.19.0

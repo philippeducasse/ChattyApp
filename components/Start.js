@@ -1,51 +1,67 @@
-import { StyleSheet, View, Text, Button, TextInput, ImageBackground, TouchableOpacity, Image} from 'react-native';
+import { StyleSheet, View, Text, Button, TextInput, ImageBackground, TouchableOpacity, Image, Alert } from 'react-native';
 import { useState } from 'react';
+import { getAuth, signInAnonymously } from "firebase/auth";
 
 const Start = ({ navigation }) => {
 
     const [name, setName] = useState('');
     const [chatBackgroundColor, setChatBackgroundColor] = useState('#8A95A5');
 
+    // initialises the firebase authentication handler
+    const auth = getAuth();
+
+    const signInUser = () => {
+        signInAnonymously(auth)
+            .then(result => {
+                navigation.navigate('Chat', { userID: result.user.uid, name: name, chatBackgroundColor: chatBackgroundColor});
+                Alert.alert('Signed in successfully');
+            })
+            .catch((error) => {
+                Alert.alert('Sign-in failed, please try again');
+            });
+    };
+
+
     return (
         <View style={styles.container}>
-                <ImageBackground source={require('../assets/BackgroundImage.png')} style={styles.image}>
-                    <Text style={styles.title}>Hello World App</Text>
-                    <View style={styles.card}>
-                        <Image
-                            source={require('../assets/icon.svg')}
-                            style={styles.icon}
+            <ImageBackground source={require('../assets/BackgroundImage.png')} style={styles.image}>
+                <Text style={styles.title}>Hello World App</Text>
+                <View style={styles.card}>
+                    <Image
+                        source={require('../assets/icon.svg')}
+                        style={styles.icon}
+                    />
+                    <TextInput
+                        style={styles.textInput}
+                        value={name}
+                        onChangeText={setName}
+                        placeholder='Your Name'
+                    />
+                    <Text style={styles.chooseBackground} >Choose Background Color:</Text>
+                    <View style={{ flexDirection: 'row', padding: 10 }}>
+                        <TouchableOpacity style={[styles.backgrounds, { backgroundColor: '#fff' }]}
+                            onPress={() => setChatBackgroundColor('#fff')}
                         />
-                        <TextInput
-                            style={styles.textInput}
-                            value={name}
-                            onChangeText={setName}
-                            placeholder='Your Name'
+                        <TouchableOpacity style={[styles.backgrounds, { backgroundColor: '#474056' }]}
+                            onPress={() => setChatBackgroundColor('#474056')}
                         />
-                        <Text style={styles.chooseBackground} >Choose Background Color:</Text>
-                        <View style={{ flexDirection: 'row', padding: 10 }}>
-                            <TouchableOpacity style={[styles.backgrounds, { backgroundColor: '#fff' }]}
-                                onPress={() => setChatBackgroundColor('#fff')}
-                            />
-                            <TouchableOpacity style={[styles.backgrounds, { backgroundColor: '#474056' }]}
-                                onPress={() => setChatBackgroundColor('#474056')}
-                            />
-                            <TouchableOpacity style={[styles.backgrounds, { backgroundColor: '#8A95A5' }]}
-                                onPress={() => setChatBackgroundColor('#8A95A5')}
-                            />
-                            <TouchableOpacity style={[styles.backgrounds, { backgroundColor: '#B9C6AE' }]}
-                                onPress={() => setChatBackgroundColor('#B9C6AE')}
-                            />
-                        </View>
-                        <View style={styles.buttonComponent}>
-                            <TouchableOpacity
-                                onPress={() => navigation.navigate('Chat', { name: name, chatBackgroundColor: chatBackgroundColor })}
-                                style={styles.button}
-                            >
-                                <Text style={styles.buttonText}>Start Chatting</Text>
-                            </TouchableOpacity>
-                        </View>
+                        <TouchableOpacity style={[styles.backgrounds, { backgroundColor: '#8A95A5' }]}
+                            onPress={() => setChatBackgroundColor('#8A95A5')}
+                        />
+                        <TouchableOpacity style={[styles.backgrounds, { backgroundColor: '#B9C6AE' }]}
+                            onPress={() => setChatBackgroundColor('#B9C6AE')}
+                        />
                     </View>
-                </ImageBackground>
+                    <View style={styles.buttonComponent}>
+                        <TouchableOpacity
+                            onPress={signInUser}
+                            style={styles.button}
+                        >
+                            <Text style={styles.buttonText}>Start Chatting</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </ImageBackground>
         </View>
     )
 }
@@ -71,7 +87,7 @@ const styles = StyleSheet.create({
         marginTop: 100,
     },
     card: {
-        
+
         backgroundColor: '#fff',
         padding: 15,
         // this was set to a specific height otherwise the keyboard messes up the layout
