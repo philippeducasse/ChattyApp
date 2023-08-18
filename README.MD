@@ -11,6 +11,7 @@ location.
 - React Native Gifted Chat library
 - Google Firestore DB
 - Google Firebase Authentication
+- AsyncStorage caching for offline use
 
 ## Key Features
 
