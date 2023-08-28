@@ -15,6 +15,8 @@ location.
 - Google Firestore DB
 - Google Firebase Authentication
 - AsyncStorage caching for offline use
+- Firebase cloud storage (for storing images)
+- Expo ImagePicker & MediaLibrary for integrating communication features
 
 ## Key Features
 
@@ -27,27 +29,27 @@ and location data.
 
 ## How to set up the application
 
-As this application requires react native and is developped with Expo, the first step involves downgrading (if necessary) to a node version compatible with Expo:
+* As this application requires react native and is developped with Expo, the first step involves downgrading (if necessary) to a node version compatible with Expo:
 
-npm install 16.19.0
-npm use 16.19.0
-npm alias default 16.19.0
+- npm install 16.19.0
+- npm use 16.19.0
+- npm alias default 16.19.0
 
 Next, install expo CLI on your machine: 
 
-npm install -g expo-cli
+- npm install -g expo-cli
 
 Then create an expo account (https://expo.dev/), and either install expo on your smartphone, or install a virtual machine on your computer.
 
-Create a react native line by running this command:
+* Create a react native line by running this command:
 
 npx create-expo-app ChattyApp --template
 
 Run expo:
 
-npm start, or expo start
+- npm start, or expo start
 
-Run 'npm i whatwg-fetch@3.6.2' (current whatwg version causes issues with images being able to be sent. This version still functions as intended.)
+- Run 'npm i whatwg-fetch@3.6.2' (current whatwg version causes issues with images being able to be sent. This version still functions as intended.)
 
 
 sync Metro Bundler either with your smartphone (you will need to install the expoGo app) or using your device emulator to see the app live.
@@ -77,10 +79,10 @@ Set up Android Studio
 
 If you want to use all of the features of this app, you will need to run:
 
-expo install expo-image-picker
-expo install react-native-maps
-expo install expo-location
-expo install expo-media-library
+- expo install expo-image-picker
+- expo install react-native-maps
+- expo install expo-location
+- expo install expo-media-library
    
 ## Github Link
 
