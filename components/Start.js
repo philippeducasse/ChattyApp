@@ -25,7 +25,7 @@ const Start = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <ImageBackground source={require('../assets/BackgroundImage.png')} style={styles.image}>
-                <Text style={styles.title}>Hello World App</Text>
+                <Text style={styles.title}>ChattyApp</Text>
                 <View style={styles.card}>
                     <Image
                         source={require('../assets/icon.svg')}

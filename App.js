@@ -13,6 +13,8 @@ const Stack = createNativeStackNavigator();
 
 import { initializeApp } from "firebase/app";
 import { getFirestore, disableNetwork, enableNetwork } from "firebase/firestore";
+// storage for images and videos
+import { getStorage } from "firebase/storage";
 
 // package to determine whether user has internet acces or not
 import { useNetInfo } from '@react-native-community/netinfo';
@@ -49,9 +51,10 @@ const App = () => {
 
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
-
   // Initialize Cloud Firestore and get a reference to the service
   const db = getFirestore(app);
+  // Initialize image storage 
+  const storage = getStorage(app);
 
   return (
     <NavigationContainer>
@@ -59,7 +62,12 @@ const App = () => {
         <Stack.Screen name='Start' component={Start} />
         {/* this is the syntax for passing a prop (db) through StackScreen */}
         <Stack.Screen name='Chat'>
-          {props => <Chat isConnected={connectionStatus.isConnected} db={db} {...props} />}
+          {props => <Chat
+            isConnected={connectionStatus.isConnected}
+            db={db}
+            storage={storage}
+            {...props}
+          />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>

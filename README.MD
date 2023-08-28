@@ -4,10 +4,13 @@ This project aims at creating an App for mobile devices using React Native. The 
 provide users with a chat interface and options to share images and their
 location.
 
+<img src="/assets/sc_1.jpg" alt= "ChattyApp screen shot" width="200" margin= "0, auto"">
+
+
 ## Technologies Used
 
 - React Native
-- Expo
+- Expo (toolchain to write native apps in JS)
 - React Native Gifted Chat library
 - Google Firestore DB
 - Google Firebase Authentication
@@ -26,9 +29,9 @@ and location data.
 
 As this application requires react native and is developped with Expo, the first step involves downgrading (if necessary) to a node version compatible with Expo:
 
-nvm install 16.19.0
-nvm use 16.19.0
-nvm alias default 16.19.0
+npm install 16.19.0
+npm use 16.19.0
+npm alias default 16.19.0
 
 Next, install expo CLI on your machine: 
 
@@ -44,4 +47,41 @@ Run expo:
 
 npm start, or expo start
 
-sync Metro Bundler either with your smartphone or using your device emulator to see the app live.
+Run 'npm i whatwg-fetch@3.6.2' (current whatwg version causes issues with images being able to be sent. This version still functions as intended.)
+
+
+sync Metro Bundler either with your smartphone (you will need to install the expoGo app) or using your device emulator to see the app live.
+
+### Database configuration
+
+If you wish to use your own database for this project, then create a new database on https://firebase.google.com (signup is required first). 
+
+then run  'npm i firebase'
+
+- Navigate to the console ('Go To Console' in the top right)
+- Add project
+- Once in the project use 'Build->Firestore Database' on the left sid eof the screen under product categories
+- Create Database, Start in production mode, hit next and then enable.
+- Once in Firestore Database navigate to rules and change 'allow read, write: if false;' to 'allow read, write: if true;' and publish.
+- Navigate to 'Project Settings->General'
+- Under 'Your apps' select webapp (</>)
+- Select a nickname (you don't have to setup Firebase Hosting) and follow the prompts.
+- Copy the section of code starting with 'const firebaseConfig =' and paste it into App.js replacing what is in there already.
+const firebaseConfig = {
+    [your unique credentials]
+  };
+
+Set up Android Studio
+
+### necessary libraries to install
+
+If you want to use all of the features of this app, you will need to run:
+
+expo install expo-image-picker
+expo install react-native-maps
+expo install expo-location
+expo install expo-media-library
+   
+## Github Link
+
+https://github.com/philippeducasse/ChattyApp

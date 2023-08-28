@@ -3,12 +3,12 @@ import { useState, useEffect } from 'react';
 import { Bubble, GiftedChat, InputToolbar } from "react-native-gifted-chat";
 import { collection, addDoc, onSnapshot, query, orderBy } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import CustomActions from './CustomActions';
+import MapView from 'react-native-maps';
 
-const Chat = ({ route, navigation, db, isConnected }) => {
+const Chat = ({ route, navigation, db, isConnected, storage }) => {
 
-  const { name } = route.params; // route prop was set to all screen components listed under Stack.Navigator
-  const { chatBackgroundColor } = route.params;
-  const { userID } = route.params;
+  const { name, chatBackgroundColor, userID } = route.params; // route prop was set to all screen components listed under Stack.Navigator
   const [messages, setMessages] = useState([]);
 
   let unsubMessages;
@@ -17,26 +17,26 @@ const Chat = ({ route, navigation, db, isConnected }) => {
     // sets the navigation's header title to "name" prop
     navigation.setOptions({ title: name });
 
-    if(isConnected === true) {
-      if(unsubMessages) unsubMessages();
+    if (isConnected === true) {
+      if (unsubMessages) unsubMessages();
       unsubMessages = null;
-    //sets up a snapshot fx which pushes new changes automatically
-    // the "query" & "orderedBy" functions are used to extract and sort the messages
-    const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
-    unsubMessages = onSnapshot(q, (documentsSnapshot) => {
-      let newMessages = [];
-      documentsSnapshot.forEach(doc => {
-        newMessages.push({
-          id: doc.id,
-          ...doc.data(),
-          createdAt: new Date(doc.data().createdAt.toMillis())
-        })
+      //sets up a snapshot fx which pushes new changes automatically
+      // the "query" & "orderedBy" functions are used to extract and sort the messages
+      const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
+      unsubMessages = onSnapshot(q, (documentsSnapshot) => {
+        let newMessages = [];
+        documentsSnapshot.forEach(doc => {
+          newMessages.push({
+            id: doc.id,
+            ...doc.data(),
+            createdAt: new Date(doc.data().createdAt.toMillis())
+          })
+        });
+        // stores new messages to cache if online
+        cacheMessages(newMessages);
+        setMessages(newMessages);
       });
-      // stores new messages to cache if online
-      cacheMessages(newMessages);
-      setMessages(newMessages);
-    });
-  } else loadCachedMessages();
+    } else loadCachedMessages();
 
     // Clean-up code (to avoid memory leaks), called when ShoppingLists is unmounted
     return () => {
@@ -60,15 +60,16 @@ const Chat = ({ route, navigation, db, isConnected }) => {
     }
   }
 
-// loads messages from cache
+  // loads messages from cache
 
-const loadCachedMessages = async () => {
-  const cachedMessages = await AsyncStorage.getItem('messages') || [];// sets cached list to empty array if something fails
-  // cache stores lists as strings, so have to parse them first
-  setMessages(JSON.parse(cachedMessages));
+  const loadCachedMessages = async () => {
+    const cachedMessages = await AsyncStorage.getItem('messages') || [];// sets cached list to empty array if something fails
+    // cache stores lists as strings, so have to parse them first
+    setMessages(JSON.parse(cachedMessages));
 
-}
+  }
 
+  // modifies styling of the chat bubbles
   const renderBubble = (props) => {
     return <Bubble
       {...props}
@@ -83,10 +84,45 @@ const loadCachedMessages = async () => {
     />
   }
 
+  // what does this do?
   const renderInputToolbar = (props) => {
     if (isConnected) return <InputToolbar {...props} />;
     else return null;
-   }
+  }
+
+  // adds the + button 
+  const renderCustomActions = (props) => {
+    return <CustomActions
+      storage={storage}
+      userID = {userID}
+      {...props}
+    />;
+  };
+
+  // checks if message contains location data, and if it does, returns a MapView
+  const renderCustomView = (props) => {
+    const { currentMessage } = props;
+    if (currentMessage.location) {
+      return (
+        <MapView
+          style={{
+            width: 150,
+            height: 100,
+            borderRadius: 13,
+            margin: 3
+          }}
+          region={{
+            latitude: currentMessage.location.latitude,
+            longitude: currentMessage.location.longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+        />
+      );
+    }
+    return null
+  }
+
 
   return (
     <View style={[styles.container
@@ -96,10 +132,14 @@ const loadCachedMessages = async () => {
       <GiftedChat
         messages={messages}
         renderBubble={renderBubble}
-        InputToolbar = {renderInputToolbar}
+        InputToolbar={renderInputToolbar}
+        renderActions={renderCustomActions}
+        renderCustomView={renderCustomView}
         onSend={messages => onSend(messages)}
-        _id={userID}
-        name={name}
+        user={{
+          _id: userID,
+          name
+        }}
 
       />
       {Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
