@@ -1,15 +1,17 @@
-import { StyleSheet, View, Text, KeyboardAvoidingView, Platform, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, KeyboardAvoidingView, Platform, TouchableOpacity } from 'react-native';
 import { useState, useEffect } from 'react';
 import { Bubble, GiftedChat, InputToolbar } from "react-native-gifted-chat";
 import { collection, addDoc, onSnapshot, query, orderBy } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import CustomActions from './CustomActions';
 import MapView from 'react-native-maps';
+
+import CustomActions from './CustomActions';
 
 const Chat = ({ route, navigation, db, isConnected, storage }) => {
 
   const { name, chatBackgroundColor, userID } = route.params; // route prop was set to all screen components listed under Stack.Navigator
   const [messages, setMessages] = useState([]);
+
 
   let unsubMessages;
   useEffect(() => {
@@ -23,6 +25,8 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
       //sets up a snapshot fx which pushes new changes automatically
       // the "query" & "orderedBy" functions are used to extract and sort the messages
       const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
+      // here, onsnapshot is a fx, which can then be called by calling unsubMessages();
+      // with this specific logic
       unsubMessages = onSnapshot(q, (documentsSnapshot) => {
         let newMessages = [];
         documentsSnapshot.forEach(doc => {
@@ -143,17 +147,6 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
 
       />
       {Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
-      <TouchableOpacity
-        accessible={true}
-        accessibilityLabel="More options"
-        accessibilityHint="Lets you choose to send an image or your geolocation."
-        accessibilityRole="button"
-      // onPress={onPress}
-      >
-        <View style={styles.button}>
-
-        </View>
-      </TouchableOpacity>
     </View>
   );
 }

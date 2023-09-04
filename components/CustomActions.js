@@ -18,7 +18,7 @@ const CustomActions = ({ wrapperStyle, iconTextStyle, onSend, storage, userID })
         ActionSheet.showActionSheetWithOptions(
             {
                 options,
-                // don't understand this cancel button index
+                // check if cancel button is working
                 cancelButtonIndex
             },
             async (buttonIndex) => {

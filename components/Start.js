@@ -2,6 +2,7 @@ import { StyleSheet, View, Text, Button, TextInput, ImageBackground, TouchableOp
 import { useState } from 'react';
 import { getAuth, signInAnonymously } from "firebase/auth";
 
+// navigation is pased from stack-navigation in app.js
 const Start = ({ navigation }) => {
 
     const [name, setName] = useState('');
@@ -12,10 +13,12 @@ const Start = ({ navigation }) => {
 
     const signInUser = () => {
         signInAnonymously(auth)
+        // if signed in:
             .then(result => {
                 navigation.navigate('Chat', { userID: result.user.uid, name: name, chatBackgroundColor: chatBackgroundColor});
                 Alert.alert('Signed in successfully');
             })
+        // otherwise
             .catch((error) => {
                 Alert.alert('Sign-in failed, please try again');
             });
