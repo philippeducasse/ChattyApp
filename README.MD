@@ -1,7 +1,7 @@
 ## ChattyApp Chat App
 
-This project aims at creating an App for mobile devices using React Native. The app will
-provide users with a chat interface and options to share images and their
+This project aims at creating an App for mobile devices using React Native. The app
+provides users with a chat interface and options to share images and their
 location.
 
 <img src="/assets/Screenshots/chattyApp.jpg" alt= "ChattyApp screen shot" width="200" margin= "0, auto">
